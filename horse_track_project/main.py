@@ -20,6 +20,4 @@ def main():
         a.show_horse_data()
 
 if __name__ == "__main__":
-    
-    a = ATMMachine()
-    a.dispense_cash(900)
+    main()

@@ -1,6 +1,10 @@
 # coffee_machine/machine.py
 from .menu_config import DRINK_MENU, INGREDIENT_PRICES, MAX_STOCK
 import sys
+from colorama import Fore, Style, init
+from .helper import log_and_print
+
+init(autoreset=True)
 
 class CoffeeMachine:
     def __init__(self):
@@ -23,7 +27,7 @@ class CoffeeMachine:
     
     def restock(self):
         self.inventory = {ingredient: MAX_STOCK for ingredient in self.inventory}
-        print("Restocking Complete")
+        print(Fore.GREEN + "Restocking Complete")
         self.menu = self.generate_menu()
     
     def can_make(self,drink):
@@ -43,39 +47,39 @@ class CoffeeMachine:
         if not command:
             return
         if command == "q":
+            print(Fore.YELLOW + "Exiting the Coffee Machine. Goodbye!")
             sys.exit()
         elif command == "r":
+            print(Fore.CYAN + "Restocking ingredients...")
             self.restock()
         elif int(command) > 0 and int(command) <= len(DRINK_MENU):
             
             drink = self.id_to_drink[command]
             if self.can_make(drink):
-                print(f"Dispensing: {drink}")
+                log_and_print(Fore.GREEN + f"Dispensing: {drink}")
                 self.deduct_ingredients(drink)
                 self.menu = self.generate_menu()
             else:
-                print(f"Out of Stock: {drink}")
+                print(Fore.RED + f"Out of Stock: {drink}")
         else:
-            print("Invalid Option: Please choose option from below")
+            print(Fore.RED + "Invalid Option: Please choose from the menu below")
         self.display_inventory()
         self.display_menu()
     
     def display_inventory(self):
-        print("______________________________")
-        print("INVENTORY:")
+        print(Fore.MAGENTA + Style.BRIGHT + "\nINVENTORY:")
         for item,qty in self.inventory.items():
             print(f"{item} {qty}")
-        print("______________________________")
+        print("")
 
     
     def display_menu(self):
-        print("______________________________")
-        print("MENU:")
-        for drink,val in self.menu.items():
+        print(Fore.BLUE + Style.BRIGHT + "\nMENU:")
+        for drink, val in self.menu.items():
             price = f"${val['cost']:.2f}"
-            available = val["in_stock"]
+            available = Fore.GREEN + "Yes" if val["in_stock"] else Fore.RED + "No"
             item_id = val["item_id"]
-            print(f"{item_id},{drink},{price},{available}")
-        print("______________________________")
+            print(f"{Fore.YELLOW}{item_id}{Style.RESET_ALL}, {drink}, {Fore.CYAN}{price}{Style.RESET_ALL}, Available: {available}")
+        print()
 
 
