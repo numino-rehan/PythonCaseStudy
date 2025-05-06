@@ -8,7 +8,11 @@ def main():
     c.display_menu()
     
     while True:
-        cmd = input("Enter command (1-6, r to restock, q to quit): ")
+        cmd = input("Enter a command:\n"
+            "'R' or 'r' - restock the  inventory\n"
+            "'Q' or 'q' - quit the application\n"
+            "[1-6]  to order a coffee\n"
+        )
         print("______________________________")
         c.process_commands(cmd)
 

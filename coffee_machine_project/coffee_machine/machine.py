@@ -13,7 +13,7 @@ class CoffeeMachine:
         menu = {
             drink:{
                "item_id":i,
-               "cost":sum(INGREDIENT_PRICES[ite]*qty for ite,qty in DRINK_MENU[drink].items()),
+               "cost":round(sum(INGREDIENT_PRICES[ite]*qty for ite,qty in DRINK_MENU[drink].items()),2),
                "in_stock":all(self.inventory[ite]>=qty for ite,qty in DRINK_MENU[drink].items())
 
             }
@@ -23,6 +23,7 @@ class CoffeeMachine:
     
     def restock(self):
         self.inventory = {ingredient: MAX_STOCK for ingredient in self.inventory}
+        print("Restocking Complete")
         self.menu = self.generate_menu()
     
     def can_make(self,drink):
